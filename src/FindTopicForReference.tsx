@@ -1,22 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { StudyNote } from "./studyNotes";
 
-export interface QuizComponentProps {
+export interface FindTopicForReferenceProps {
   data: StudyNote[];
 }
 
-type QuizQuestion = {
-  selectedStudyNote: StudyNote;
-  availableReferencesToGuess: string[];
+type CurrentQuestion = {
+  selectedTopic: string;
+  selectedReference: string;
+  availableTopicsToGuess: string[];
 };
 
-export const QuizComponent: React.FC<QuizComponentProps> = ({ data }) => {
-  const [currentQuestion, setCurrentQuestion] = useState<QuizQuestion | null>(null);
-  const [selectedReferences, setSelectedReferences] = useState<string[]>([]);
+export const FindTopicForReference: React.FC<FindTopicForReferenceProps> = ({ data }) => {
+  const [currentQuestion, setCurrentQuestion] = useState<CurrentQuestion | null>(null);
+
+  const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
+
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [revealedText, setRevealedText] = useState<string>("");
 
-  // Function to select a random topic
   const getRandomStudyNote = () => {
     const randomIndex = Math.floor(Math.random() * data.length);
     return data[randomIndex];
@@ -25,22 +27,23 @@ export const QuizComponent: React.FC<QuizComponentProps> = ({ data }) => {
   const setNewQuestion = () => {
     const currentStudyNote = getRandomStudyNote();
 
-    const referenceSet = new Set<string>();
-    currentStudyNote?.references.forEach((ref) => referenceSet.add(ref));
+    const topicSet = new Set<string>();
+    topicSet.add(currentStudyNote?.topic);
 
     let i = 0;
-    while (referenceSet.size < 10) {
+    while (topicSet.size < 10) {
       i++;
       const randomTopic = getRandomStudyNote();
-      randomTopic?.references.forEach((ref) => referenceSet.add(ref));
-      if (i > 100) {
+      topicSet.add(randomTopic?.topic);
+      if (i > 30) {
         break;
       }
     }
 
     setCurrentQuestion({
-      selectedStudyNote: currentStudyNote,
-      availableReferencesToGuess: Array.from(referenceSet).sort(() => Math.random() - 0.5),
+      selectedReference: currentStudyNote.references.sort(() => Math.random() - 0.5)[0] || "",
+      availableTopicsToGuess: Array.from(topicSet).sort(() => Math.random() - 0.5),
+      selectedTopic: currentStudyNote.topic,
     });
   };
 
@@ -48,12 +51,12 @@ export const QuizComponent: React.FC<QuizComponentProps> = ({ data }) => {
     setNewQuestion();
   }, [data]);
 
-  const handleReferenceSelect = (reference: string) => {
-    if (selectedReferences.includes(reference)) {
+  const handleTopicSelect = (topic: string) => {
+    if (selectedTopics.includes(topic)) {
       // Remove the reference from the selectedReferences array
-      setSelectedReferences(selectedReferences.filter((ref) => ref !== reference));
+      setSelectedTopics(selectedTopics.filter((possibleTopic) => possibleTopic !== topic));
     } else {
-      setSelectedReferences([...selectedReferences, reference]);
+      setSelectedTopics([...selectedTopics, topic]);
     }
     // Add or remove the reference from the selectedReferences array
   };
@@ -65,17 +68,17 @@ export const QuizComponent: React.FC<QuizComponentProps> = ({ data }) => {
 
   const handleNext = () => {
     setIsSubmitted(false);
-    setSelectedReferences([]);
+    setSelectedTopics([]);
     setNewQuestion();
     setRevealedText("");
     // Check answers and provide feedback
   };
 
-  const revealText = (ref: string, target: HTMLButtonElement) => {
+  const revealText = () => {
     try {
       const htmlCollection = document.getElementsByClassName("bibleRef");
       // filter the htmlCollection to only include the element with the id of ref
-      const element = Array.from(htmlCollection).filter((x) => x.id === ref)[0];
+      const element = Array.from(htmlCollection).filter((x) => x.id === currentQuestion?.selectedReference)[0];
       const bibleRef = Array.from(element.children).find((x) => x.className == "rtBibleRef") as HTMLAnchorElement;
       bibleRef.click();
       window.setTimeout(() => {
@@ -93,9 +96,16 @@ export const QuizComponent: React.FC<QuizComponentProps> = ({ data }) => {
   return (
     <div style={{ position: "absolute", top: 0, bottom: 0, left: 0, right: 0 }}>
       <div style={{ padding: "4px", fontSize: "24px", minHeight: "10%" }} className="topic-section">
-        {currentQuestion?.selectedStudyNote.topic}
+        {currentQuestion?.selectedReference}
+        <button
+          style={{ flex: 1, margin: "4px", padding: "4px" }}
+          onClick={() => {
+            revealText();
+          }}
+        >
+          Reveal text
+        </button>
       </div>
-
       <div style={{ padding: 2, margin: 2, borderBottom: "10px solid black" }}>
         <button style={{ padding: 2, margin: 2 }} onClick={handleSubmit}>
           Submit
@@ -109,9 +119,9 @@ export const QuizComponent: React.FC<QuizComponentProps> = ({ data }) => {
           className="references-section"
           style={{ display: "flex", flexDirection: "column", borderBottom: "10px solid black" }}
         >
-          {currentQuestion?.availableReferencesToGuess.map((ref) => {
-            const isACorrectAnswer = currentQuestion?.selectedStudyNote.references.includes(ref);
-            const isSelectedAnswer = selectedReferences.includes(ref);
+          {currentQuestion?.availableTopicsToGuess.map((topic) => {
+            const isACorrectAnswer = currentQuestion?.selectedTopic === topic;
+            const isSelectedAnswer = selectedTopics.includes(topic);
             let backgroundColor = "green";
             if (isSubmitted) {
               if (isACorrectAnswer) {
@@ -127,7 +137,7 @@ export const QuizComponent: React.FC<QuizComponentProps> = ({ data }) => {
               }
             }
             return (
-              <div style={{ flex: 1, display: "flex" }} key={ref}>
+              <div style={{ flex: 1, display: "flex" }} key={topic}>
                 <button
                   style={{
                     flex: 3,
@@ -136,17 +146,9 @@ export const QuizComponent: React.FC<QuizComponentProps> = ({ data }) => {
                     backgroundColor: backgroundColor,
                     border: "2px solid black",
                   }}
-                  onClick={() => handleReferenceSelect(ref)}
+                  onClick={() => handleTopicSelect(topic)}
                 >
-                  {ref}
-                </button>
-                <button
-                  style={{ flex: 1, margin: "4px", padding: "4px" }}
-                  onClick={(e) => {
-                    revealText(ref, e.currentTarget);
-                  }}
-                >
-                  Reveal text
+                  {topic}
                 </button>
               </div>
             );

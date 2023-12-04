@@ -3,6 +3,7 @@ import logo from "./logo.svg";
 import "./App.css";
 import { QuizComponent } from "./QuizComponent";
 import { studyNotes } from "./studyNotes";
+import { FindTopicForReference } from "./FindTopicForReference";
 
 function initializeRefTagger(): void {
   document.getElementById("myRefTagger")?.remove();
@@ -33,19 +34,32 @@ function App() {
     return Array.from(uniqueNotes);
   }, []);
 
-  const [ready, setReady] = useState(false);
+  const [selectedComponent, setSelectedComponent] = useState("");
   useEffect(() => {
     const interval = setInterval(() => {
       const readyToLoad = document.getElementsByClassName("rtBibleRef").length > 0;
       if (readyToLoad) {
-        setReady(true);
         clearInterval(interval);
       }
     }, 10);
   });
   return (
     <div>
-      {ready && <QuizComponent data={studyNotes} />}
+      {!selectedComponent && (
+        <>
+          <div>
+            <button onClick={() => setSelectedComponent("TopicToReference")}>Topic to reference</button>
+          </div>
+          <div>
+            <button onClick={() => setSelectedComponent("ReferenceToTopic")}>Reference to topic</button>
+          </div>
+        </>
+      )}
+      {selectedComponent === "TopicToReference" ? (
+        <FindTopicForReference data={studyNotes}></FindTopicForReference>
+      ) : selectedComponent === "ReferenceToTopic" ? (
+        <QuizComponent data={studyNotes} />
+      ) : null}
       <div style={{ visibility: "collapse" }}>
         {allNotesAsReferences.map((x) => (
           <span key={x} className="bibleRef" id={x}>
