@@ -4,6 +4,7 @@ import "./App.css";
 import { QuizComponent } from "./QuizComponent";
 import { studyNotes } from "./studyNotes";
 import { FindTopicForReference } from "./FindTopicForReference";
+import { PericopeTable } from "./PericopeTable";
 
 function initializeRefTagger(): void {
   document.getElementById("myRefTagger")?.remove();
@@ -53,12 +54,17 @@ function App() {
           <div>
             <button onClick={() => setSelectedComponent("ReferenceToTopic")}>Reference to topic</button>
           </div>
+          <div>
+            <button onClick={() => setSelectedComponent("PericopeSelector")}>PericopeSelector</button>
+          </div>
         </>
       )}
       {selectedComponent === "TopicToReference" ? (
         <FindTopicForReference data={studyNotes}></FindTopicForReference>
       ) : selectedComponent === "ReferenceToTopic" ? (
         <QuizComponent data={studyNotes} />
+      ) : selectedComponent === "PericopeSelector" ? (
+        <PericopeTable></PericopeTable>
       ) : null}
       <div style={{ visibility: "collapse" }}>
         {allNotesAsReferences.map((x) => (
