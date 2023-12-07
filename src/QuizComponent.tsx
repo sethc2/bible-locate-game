@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { StudyNote } from "./studyNotes";
 
 export interface QuizComponentProps {
@@ -11,6 +11,10 @@ type QuizQuestion = {
 };
 
 export const QuizComponent: React.FC<QuizComponentProps> = ({ data }) => {
+  const [notesInRandomOrder, setRandomNotesInOrder] = useState(() => {
+    return data.sort(() => Math.random() - 0.5);
+  });
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [currentQuestion, setCurrentQuestion] = useState<QuizQuestion | null>(null);
   const [selectedReferences, setSelectedReferences] = useState<string[]>([]);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -22,8 +26,9 @@ export const QuizComponent: React.FC<QuizComponentProps> = ({ data }) => {
     return data[randomIndex];
   };
 
-  const setNewQuestion = () => {
-    const currentStudyNote = getRandomStudyNote();
+  const setNewQuestion = (index: number) => {
+    setCurrentIndex(index);
+    const currentStudyNote = notesInRandomOrder[index];
 
     const referenceSet = new Set<string>();
     currentStudyNote?.references.forEach((ref) => referenceSet.add(ref));
@@ -45,7 +50,7 @@ export const QuizComponent: React.FC<QuizComponentProps> = ({ data }) => {
   };
 
   useEffect(() => {
-    setNewQuestion();
+    setNewQuestion(0);
   }, [data]);
 
   const handleReferenceSelect = (reference: string) => {
@@ -60,13 +65,27 @@ export const QuizComponent: React.FC<QuizComponentProps> = ({ data }) => {
 
   const handleSubmit = () => {
     setIsSubmitted(true);
+    if (
+      selectedReferences.filter((x) => currentQuestion?.selectedStudyNote.references.includes(x)).length !==
+      currentQuestion?.selectedStudyNote.references.length
+    ) {
+      setRandomNotesInOrder([...notesInRandomOrder, notesInRandomOrder[currentIndex]]);
+    }
     // Check answers and provide feedback
   };
 
   const handleNext = () => {
     setIsSubmitted(false);
     setSelectedReferences([]);
-    setNewQuestion();
+    setNewQuestion((currentIndex + 1) % notesInRandomOrder.length);
+    setRevealedText("");
+    // Check answers and provide feedback
+  };
+
+  const handlePrevious = () => {
+    setIsSubmitted(false);
+    setSelectedReferences([]);
+    setNewQuestion(currentIndex == 0 ? notesInRandomOrder.length - 1 : currentIndex - 1);
     setRevealedText("");
     // Check answers and provide feedback
   };
@@ -92,7 +111,15 @@ export const QuizComponent: React.FC<QuizComponentProps> = ({ data }) => {
 
   return (
     <div style={{ position: "absolute", top: 0, bottom: 0, left: 0, right: 0 }}>
-      <div style={{ padding: "4px", fontSize: "24px", minHeight: "10%" }} className="topic-section">
+      <div
+        style={{
+          padding: "4px",
+          fontSize: "24px",
+          minHeight: "10%",
+          color: currentIndex > data.length ? "red" : "black",
+        }}
+        className="topic-section"
+      >
         {currentQuestion?.selectedStudyNote.topic}
       </div>
 
@@ -100,8 +127,11 @@ export const QuizComponent: React.FC<QuizComponentProps> = ({ data }) => {
         <button style={{ padding: 2, margin: 2 }} onClick={handleSubmit}>
           Submit
         </button>
-        <button style={{ padding: 2, margin: 2, visibility: isSubmitted ? "visible" : "hidden" }} onClick={handleNext}>
+        <button style={{ padding: 2, margin: 2 }} onClick={handleNext}>
           Next
+        </button>
+        <button style={{ padding: 2, margin: 2 }} onClick={handlePrevious}>
+          Previous
         </button>
       </div>
       <div>
