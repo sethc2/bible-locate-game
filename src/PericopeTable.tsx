@@ -263,7 +263,13 @@ export const PericopeTable = () => {
                   <ul style={{ margin: "16px", padding: "1px" }}>
                     {pericope.topics.map((topic, index) => (
                       <li key={`${topic.topic}${topic.reference}`}>
-                        {topic.topic} <div style={{ margin: "2px" }}>{topic.reference}</div>
+                        {topic.topic}{" "}
+                        <button
+                          onClick={() => revealText(topic.reference)}
+                          style={{ margin: "2px", border: "none", color: "blue", background: "white" }}
+                        >
+                          {topic.reference}
+                        </button>
                       </li>
                     ))}
                   </ul>
