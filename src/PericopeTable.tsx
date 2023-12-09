@@ -212,7 +212,7 @@ export const PericopeTable = () => {
               <ul>
                 {allTopicsRandom[currentTopicIndex].references.map((reference) => (
                   <li key={reference}>
-                    <button onClick={() => revealText(reference)}>{reference}</button>
+                    <span>{reference}</span>
                     <button style={{ marginLeft: "4px" }} onClick={() => scrollToTopicWithReference(reference)}>
                       Go 2 Ctx
                     </button>
