@@ -84,22 +84,62 @@ export const PericopeTable = () => {
       };
     });
 
+    console.log(theNotes.find((x) => x.topic === "Someone wanting to marry a non-christian"));
+
     function intersects(
       entry: (typeof pericopesWithStartAndChapterAndVerses)[0],
       reference: (typeof theNotes)[0]["references"][0]
     ) {
-      // Check if the chapter and verse ranges intersect
+      // First, check if the books are the same
+      if (entry.book !== reference.book) {
+        return false;
+      }
+
+      // Check if the chapter ranges intersect
       let intersectsChapter =
         entry.startChapter <= reference.endingChapter && entry.endingChapter >= reference.startChapter;
-      let intersectsVerse = entry.startVerse <= reference.endingVerse && entry.endingVerse >= reference.startVerse;
 
-      return intersectsChapter && intersectsVerse;
+      // If the chapters do not intersect, no need to check verses
+      if (!intersectsChapter) {
+        return false;
+      }
+
+      // If the starting chapters are the same, check if the starting verse of one is less than or equal to the ending verse of the other
+      if (entry.startChapter === reference.startChapter) {
+        if (entry.startVerse > reference.endingVerse) {
+          return false;
+        }
+      }
+
+      // If the ending chapters are the same, check if the ending verse of one is greater than or equal to the starting verse of the other
+      if (entry.endingChapter === reference.endingChapter) {
+        if (entry.endingVerse < reference.startVerse) {
+          return false;
+        }
+      }
+
+      // In case of overlapping chapters, check if the start chapter of one is less than the end chapter of the other and vice versa
+      if (entry.startChapter < reference.endingChapter || entry.endingChapter > reference.startChapter) {
+        return true;
+      }
+
+      // Check for the case where the reference is completely within the entry
+      if (entry.startChapter <= reference.startChapter && entry.endingChapter >= reference.endingChapter) {
+        return true;
+      }
+
+      // Check for the case where the entry is completely within the reference
+      if (reference.startChapter <= entry.startChapter && reference.endingChapter >= entry.endingChapter) {
+        return true;
+      }
+
+      return false;
     }
 
     pericopesWithStartAndChapterAndVerses.forEach((entry) => {
       theNotes.forEach((topicEntry) => {
         topicEntry.references.forEach((reference) => {
-          if (entry.book === reference.book && intersects(entry, reference)) {
+          if (intersects(entry, reference)) {
             if (!entry.topics.map((x) => x.topic).includes(topicEntry.topic)) {
               entry.topics.push({ topic: topicEntry.topic, reference: reference.referenceId });
             }
@@ -107,6 +147,8 @@ export const PericopeTable = () => {
         });
       });
     });
+
+    console.log(pericopesWithStartAndChapterAndVerses.find((x) => x.pericope.startsWith("Do Not Be Yoked")));
 
     // console.log(pericopesWithStartAndChapterAndVerses);
     return pericopesWithStartAndChapterAndVerses;
