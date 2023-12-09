@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/bible-locate-game/static/css/main.641e3425.css",
-    "main.js": "/bible-locate-game/static/js/main.2788aca5.js",
+    "main.js": "/bible-locate-game/static/js/main.da815b57.js",
     "static/js/787.7fd6d951.chunk.js": "/bible-locate-game/static/js/787.7fd6d951.chunk.js",
     "index.html": "/bible-locate-game/index.html",
     "main.641e3425.css.map": "/bible-locate-game/static/css/main.641e3425.css.map",
-    "main.2788aca5.js.map": "/bible-locate-game/static/js/main.2788aca5.js.map",
+    "main.da815b57.js.map": "/bible-locate-game/static/js/main.da815b57.js.map",
     "787.7fd6d951.chunk.js.map": "/bible-locate-game/static/js/787.7fd6d951.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.641e3425.css",
-    "static/js/main.2788aca5.js"
+    "static/js/main.da815b57.js"
   ]
 }
