@@ -5,6 +5,8 @@ import { QuizComponent } from "./QuizComponent";
 import { studyNotes } from "./studyNotes";
 import { FindTopicForReference } from "./FindTopicForReference";
 import { PericopeTable } from "./PericopeTable";
+import { bookMap } from "./bookMap";
+import { allPericopes } from "./allPericopes";
 
 function initializeRefTagger(): void {
   document.getElementById("myRefTagger")?.remove();
@@ -31,6 +33,18 @@ function App() {
   }, []); // Add dependencies here if the effect should run on specific updates
   const allNotesAsReferences = useMemo(() => {
     const notes = studyNotes.map((x) => x.references).flat();
+
+    const uniqueChapters = new Set<string>();
+    notes.forEach((note) => {
+      if (note.split(" ")[0] === "1" || note.split(" ")[0] === "2") {
+        uniqueChapters.add(note.split(" ")[0] + " " + note.split(" ")[1]);
+      } else {
+        uniqueChapters.add(note.split(" ")[0]);
+      }
+    });
+
+    console.log(Array.from(uniqueChapters));
+
     const uniqueNotes = new Set(notes);
     return Array.from(uniqueNotes);
   }, []);

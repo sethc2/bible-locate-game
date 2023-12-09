@@ -14,13 +14,13 @@ export const studyNotes: StudyNote[] = [
 
   { topic: "Perseverance of the Saints", references: ["Philippians 1:6"] },
 
-  { topic: "Covenant of life/works", references: ["Genesis 1-2"] },
+  { topic: "Covenant of life/works", references: ["Genesis 1:1-2:25"] },
 
   { topic: "Covenant of Grace", references: ["Genesis 3:15"] },
 
   { topic: "Two Adams", references: ["Romans 5:19"] },
 
-  { topic: "Infant Baptism Circumcision", references: ["Genesis 17"] },
+  { topic: "Infant Baptism Circumcision", references: ["Genesis 17:1-27"] },
 
   { topic: "Infant baptism justification by faith", references: ["Romans 4:9-10", "Genesis 15:6"] },
 
@@ -36,7 +36,7 @@ export const studyNotes: StudyNote[] = [
 
   { topic: "Ten commandments", references: ["Exodus 20:1-17"] },
 
-  { topic: "Sermon on the mount", references: ["Matthew 5-7"] },
+  { topic: "Sermon on the mount", references: ["Matthew 5:1-7:29"] },
 
   { topic: "Sermon on the mount Beatitudes", references: ["Matthew 5:1-12"] },
 
@@ -80,7 +80,7 @@ export const studyNotes: StudyNote[] = [
 
   { topic: "Sermon on the mount The authority of Jesus", references: ["Matthew 7:28-29"] },
 
-  { topic: "Davids Prayer of repentance", references: ["Psalm 51"] },
+  { topic: "Davids Prayer of repentance", references: ["Psalm 51:1-19"] },
 
   { topic: "Jesus is the second adam", references: ["1 Corinthians 15:45-49", "Romans 5:12"] },
 
@@ -98,7 +98,7 @@ export const studyNotes: StudyNote[] = [
 
   { topic: "Ascension", references: ["Luke 24:50-52", "Acts 1:6-11"] },
 
-  { topic: "Jesus High Priestly Prayer", references: ["John 17"] },
+  { topic: "Jesus High Priestly Prayer", references: ["John 17:1-26"] },
 
   { topic: "“I am the bread of life.”", references: ["John 6:35", "John 6:41", "John 6:48", "John 6:51"] },
 
@@ -182,7 +182,7 @@ export const studyNotes: StudyNote[] = [
 
   { topic: "Scripture", references: ["2 Timothy 3:16", "2 Peter 1:20-21"] },
 
-  { topic: "Day of atonement", references: ["Leviticus 16"] },
+  { topic: "Day of atonement", references: ["Leviticus 16:1-34"] },
 
   { topic: "Golden calf", references: ["Exodus 32:4"] },
 
@@ -190,13 +190,13 @@ export const studyNotes: StudyNote[] = [
 
   { topic: "All things made through Jesus", references: ["John 1:3", "Colossians 1:16"] },
 
-  { topic: "Pauls conversion", references: ["Acts 9"] },
+  { topic: "Pauls conversion", references: ["Acts 9:1-19"] },
 
-  { topic: "Jesus Lunch on beach with peter", references: ["Johnn 21:15-19"] },
+  { topic: "Jesus Lunch on beach with peter", references: ["John 21:15-19"] },
 
-  { topic: "Life of Saul", references: ["1 Samuel 9-31"] },
+  { topic: "Life of Saul", references: ["1 Samuel 9:1-31:1"] },
 
-  { topic: "Life of Solomon", references: ["1 Kings 1-11"] },
+  { topic: "Life of Solomon", references: ["1 Kings 1:1-11:43"] },
 
   { topic: "Someone struggling with pornography", references: ["Matthew 5:27-30", "1 Corinthians 6:19-20"] },
 
@@ -215,7 +215,7 @@ export const studyNotes: StudyNote[] = [
 
   {
     topic: "Wisdom with money issues",
-    references: ["Proverbs 3:9-10", "Mt 6:19", "1 Timothy 6:9-10", "2 Corinthians 9:7"],
+    references: ["Proverbs 3:9-10", "Matthew 6:19", "1 Timothy 6:9-10", "2 Corinthians 9:7"],
   },
 
   { topic: "Views on government", references: ["Romans 13:1-7", "1 Peter 2:13-17"] },
@@ -232,13 +232,13 @@ export const studyNotes: StudyNote[] = [
 
   { topic: "Noahic covenant", references: ["Genesis 9:8"] },
 
-  { topic: "Abrahamic Covenant", references: ["Genesis 12", "Genesis 15", "Genesis 17"] },
+  { topic: "Abrahamic Covenant", references: ["Genesis 12:1", "Genesis 15:1", "Genesis 17:1"] },
 
-  { topic: "Mosaic Covenant", references: ["Exodus 24"] },
+  { topic: "Mosaic Covenant", references: ["Exodus 24:1"] },
 
-  { topic: "Davidic Covenant", references: ["2 Samuel 7"] },
+  { topic: "Davidic Covenant", references: ["2 Samuel 7:1"] },
 
-  { topic: "New covenant", references: ["Jeremiah 31", "Luke 22:20"] },
+  { topic: "New covenant", references: ["Jeremiah 31:31", "Luke 22:20"] },
 ];
 
 /*
