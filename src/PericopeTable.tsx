@@ -141,7 +141,9 @@ export const PericopeTable = () => {
         } catch (error) {}
       }, 1000);
     } catch (error) {}
+  };
 
+  const scrollToTopicWithReference = (ref: string) => {
     const pericopeToScrollTo = pericopesWithStartAndChapterAndVerses.findIndex((x) =>
       x.topics.find((x) => x.reference === ref)
     );
@@ -160,15 +162,18 @@ export const PericopeTable = () => {
   return (
     <div>
       <div style={{ position: "fixed", top: 0, left: 0, right: 0, backgroundColor: "white", zIndex: 100 }}>
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          <div>{allTopicsRandom[currentTopicIndex].topic}</div>
+        <div style={{ display: "flex", flexDirection: "column", margin: "3px" }}>
+          <div>{allTopicsRandom[currentTopicIndex]?.topic}</div>
           <div>
             {!hasRevealedVerses && <button onClick={() => setHasRevealedVerses(true)}>Reveal verses</button>}
             {hasRevealedVerses && (
               <ul>
                 {allTopicsRandom[currentTopicIndex].references.map((reference) => (
-                  <li>
+                  <li key={reference}>
                     <button onClick={() => revealText(reference)}>{reference}</button>
+                    <button style={{ marginLeft: "4px" }} onClick={() => scrollToTopicWithReference(reference)}>
+                      Go 2 Ctx
+                    </button>
                   </li>
                 ))}
               </ul>
